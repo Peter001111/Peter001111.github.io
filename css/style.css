@@ -193,6 +193,81 @@ img {
   font-weight: 700;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1.5px solid var(--border-light);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(20, 12, 28, 0.04);
+  transition: all 0.25s ease;
+  z-index: 102;
+}
+
+.mobile-nav-toggle:hover {
+  border-color: var(--primary);
+}
+
+.hamburger-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-main);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-nav-toggle.open .hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-nav-toggle.open .hamburger-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.mobile-nav-toggle.open .hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 12, 28, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 98;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav-cta {
+  display: none;
+}
+
+body.nav-menu-open {
+  overflow: hidden;
+}
+
 .btn-pill {
   display: inline-flex;
   align-items: center;
@@ -1555,9 +1630,63 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   Responsive Design
+   Responsive Design & Mobile Optimization
    -------------------------------------------------------------------------- */
+
+/* Tablet & Smaller Desktops */
 @media (max-width: 992px) {
+  .site-nav {
+    padding: 0.85rem 0;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
+  }
+
+  .mobile-nav-cta {
+    display: block;
+    margin-top: 0.65rem;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 66px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(135, 80, 247, 0.15);
+    box-shadow: 0 20px 40px rgba(20, 12, 28, 0.12);
+    padding: 1.25rem 1.5rem 2rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    max-height: calc(100vh - 66px);
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 99;
+  }
+
+  .nav-links.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    padding: 0.85rem 1.15rem;
+    font-size: 1.05rem;
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
   .hero-grid, .about-grid, .process-layout {
     grid-template-columns: 1fr;
     text-align: center;
@@ -1586,7 +1715,7 @@ img {
     margin-right: auto;
   }
 
-  .services-grid, .insights-grid {
+  .services-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1612,46 +1741,598 @@ img {
   }
 }
 
+/* Mobile Devices & Small Tablets */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none;
+  .container {
+    padding: 0 1.25rem;
   }
 
-  .experience-card {
-    padding: 1.5rem;
-    gap: 1.5rem;
+  .section {
+    padding: 3.5rem 0;
+  }
+
+  .section-title {
+    font-size: clamp(1.85rem, 6.5vw, 2.25rem);
+    margin-bottom: 2.25rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.78rem;
+    margin-bottom: 0.35rem;
+  }
+
+  /* Hero Section Mobile */
+  .hero-section {
+    padding: 2.25rem 0 2rem;
+  }
+
+  .hero-grid {
+    gap: 2rem;
+  }
+
+  .hero-portrait-frame {
+    max-width: 310px;
+    margin: 0 auto;
+    border-width: 4px;
+    border-radius: 24px;
+    box-shadow: 0 12px 35px rgba(135, 80, 247, 0.16);
+  }
+
+  .hero-portrait-frame img {
+    border-radius: 20px;
+  }
+
+  .hero-main-title {
+    font-size: clamp(2rem, 7.5vw, 2.75rem);
+    line-height: 1.2;
+    margin-bottom: 1.15rem;
+  }
+
+  .hero-description {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    margin: 0 auto 1.75rem;
+    max-width: 100%;
+  }
+
+  .hero-cta-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0 auto 2rem;
+  }
+
+  .hero-cta-wrap .btn-picto-primary,
+  .hero-cta-wrap .btn-picto-outline {
+    flex: 1 1 160px;
+    min-height: 48px;
+    padding: 0.8rem 1.25rem;
+    text-align: center;
   }
 
   .hero-stats-row {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .hero-stat-box {
+    padding: 0.75rem 0.35rem;
+    border-radius: 10px;
+  }
+
+  .hero-stat-value {
+    font-size: clamp(1.2rem, 4.5vw, 1.55rem);
+    margin-bottom: 0.2rem;
+  }
+
+  .hero-stat-desc {
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
+  /* About Section Mobile */
+  .about-section {
+    padding: 3.5rem 0;
+  }
+
+  .about-grid {
+    gap: 2rem;
+  }
+
+  .about-portrait-card {
+    max-width: 310px;
+    padding: 1.15rem 1.15rem 0;
+    border-radius: 20px;
+  }
+
+  .about-heading {
+    font-size: clamp(1.4rem, 5vw, 1.85rem);
+    margin-bottom: 1rem;
+  }
+
+  .about-text {
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+
+  .about-actions-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     gap: 0.75rem;
+    margin-top: 1.5rem;
   }
 
-  .stats-grid-4, .process-grid-2x2 {
-    grid-template-columns: 1fr;
+  .about-actions-row .btn-picto-primary,
+  .about-actions-row .btn-picto-outline {
+    width: 100%;
+    min-height: 48px;
+    text-align: center;
   }
 
-  .services-grid, .works-grid, .insights-grid {
+  .stats-strip {
+    padding: 2rem 0 1rem;
+    margin-top: 1rem;
+  }
+
+  .stats-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+  }
+
+  .stat-number {
+    font-size: 2.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+  }
+
+  /* Services Grid Mobile */
+  .services-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .service-card {
+    padding: 1.5rem 1.35rem;
+    min-height: auto;
+    border-radius: 16px;
+  }
+
+  .service-num {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .service-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+  }
+
+  .service-arrow-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  /* Process Section Mobile */
+  .process-section {
+    padding: 3.5rem 0;
+  }
+
+  .process-layout {
+    gap: 2rem;
+  }
+
+  .process-header-title {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+
+  .process-header-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .process-grid-2x2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .process-card {
+    padding: 1.35rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .process-icon-box {
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .process-step-title {
+    font-size: 1.05rem;
+  }
+
+  .process-step-desc {
+    font-size: 0.86rem;
+  }
+
+  /* Experience Cards & Proof Mobile */
+  .experience-section {
+    padding: 3.5rem 0;
+  }
+
+  .experience-list {
+    gap: 1.75rem;
+  }
+
+  .experience-card {
+    padding: 1.35rem 1.15rem;
+    border-radius: 16px;
+    gap: 1.25rem;
+  }
+
+  .exp-role-title {
+    font-size: clamp(1.15rem, 4.5vw, 1.35rem);
+    line-height: 1.3;
+    margin-bottom: 0.85rem;
+  }
+
+  .exp-badge-row {
+    gap: 0.4rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .exp-date-pill, .exp-company-tag {
+    font-size: 0.78rem;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .exp-bullet-list {
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .exp-bullet-list li {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    padding-left: 1.15rem;
+  }
+
+  .exp-metrics-row {
+    gap: 0.45rem;
+  }
+
+  .exp-metric-badge {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .exp-proof-section {
+    padding-top: 1.15rem;
+  }
+
+  .exp-proof-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .exp-proof-title {
+    font-size: 0.8rem;
+  }
+
+  .exp-proof-hint {
+    font-size: 0.72rem;
   }
 
   .exp-proof-grid.grid-4,
   .exp-proof-grid.grid-3 {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .exp-proof-card {
+    border-radius: 10px;
+  }
+
+  .exp-proof-caption-bar {
+    padding: 0.5rem 0.65rem;
+  }
+
+  .exp-proof-stage {
+    font-size: 0.65rem;
+  }
+
+  .exp-proof-summary {
+    font-size: 0.74rem;
+    white-space: normal;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Graphic Designs / Works Filter Bar Swipeable */
+  .works-filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0.25rem 0.25rem 0.85rem;
+    gap: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 1.75rem;
+  }
+
+  .works-filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .works-filter-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.55rem 1.15rem;
+    font-size: 0.82rem;
+    min-height: 42px;
+  }
+
+  .works-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .work-card {
+    border-radius: 16px;
+  }
+
+  .work-info-banner {
+    padding: 0.85rem 1.15rem;
+  }
+
+  .work-title {
+    font-size: 0.98rem;
+  }
+
+  /* Core Skills 2-Column Dashboard */
+  .skills-section {
+    padding: 3.5rem 0;
+  }
+
+  .skills-main-title {
+    font-size: clamp(2rem, 7vw, 2.5rem);
+  }
+
+  .skills-main-desc {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 1.75rem;
   }
 
   .core-skills-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .skill-pill-card {
+    padding: 0.65rem 0.75rem;
+    gap: 0.55rem;
+    border-radius: 10px;
+  }
+
+  .skill-pill-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .skill-pill-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .skill-pill-label {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .education-credentials-wrap {
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
+
+  .credentials-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .resume-pill-card {
+    padding: 1.25rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .resume-card-title {
+    font-size: 1.1rem;
+  }
+
+  /* Contact Section Mobile */
+  .contact-section-grid {
+    grid-template-columns: 1fr;
+    padding: 1.75rem 1.25rem;
+    gap: 2.25rem;
+    border-radius: 18px;
+  }
+
+  .contact-form-title {
+    font-size: 1.65rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-input, .form-textarea {
+    font-size: 16px; /* Prevents auto zoom in iOS Safari */
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+  }
+
+  .contact-section-grid .btn-picto-primary {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .contact-items-column {
+    gap: 1.25rem;
+  }
+
+  .contact-info-tile {
+    gap: 1rem;
+  }
+
+  .contact-icon-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .contact-info-value {
+    font-size: 0.95rem;
+    word-break: break-word;
+  }
+
+  /* Dark Purple Footer Mobile */
+  .dark-footer {
+    padding: 2.5rem 0 2rem;
+  }
+
+  .footer-logo {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-nav {
+    gap: 0.75rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-nav a {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  /* Floating Back to Top Button */
+  .floating-top-btn {
+    bottom: 1rem;
+    right: 1rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+
+  /* Lightbox Modal Mobile */
+  .lightbox-modal {
+    padding: 1rem 0.5rem;
+  }
+
+  .lightbox-content {
+    max-width: 96vw;
+    max-height: 85vh;
+  }
+
+  .lightbox-image {
+    max-height: 68vh;
+    border-radius: 8px;
+  }
+
+  .lightbox-caption {
+    font-size: 0.825rem;
+    padding: 0 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .lightbox-close {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightbox-nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
+}
+
+/* Small Smart Phones */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .nav-contact-btn {
+    display: none;
+  }
+
+  .hero-cta-wrap {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-cta-wrap .btn-picto-primary,
+  .hero-cta-wrap .btn-picto-outline {
+    width: 100%;
+  }
+
+  .hero-stats-row {
+    gap: 0.35rem;
+  }
+
+  .hero-stat-box {
+    padding: 0.65rem 0.25rem;
+  }
+
+  .hero-stat-value {
+    font-size: clamp(1.15rem, 5vw, 1.4rem);
+  }
+
+  .hero-stat-desc {
+    font-size: 0.68rem;
+  }
+
+  .exp-proof-grid.grid-4,
+  .exp-proof-grid.grid-3 {
+    gap: 0.5rem;
   }
 }
 
-@media (max-width: 576px) {
+/* Extra Narrow Phones (e.g., iPhone SE / Galaxy Fold Cover screen) */
+@media (max-width: 360px) {
+  .core-skills-grid {
+    grid-template-columns: 1fr;
+  }
+
   .exp-proof-grid.grid-4,
   .exp-proof-grid.grid-3 {
     grid-template-columns: 1fr;
   }
 
-  .core-skills-grid {
+  .stats-grid-4 {
     grid-template-columns: 1fr;
   }
 }

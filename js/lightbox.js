@@ -91,6 +91,29 @@ class Lightbox {
       if (e.key === 'ArrowLeft') this.prev();
       if (e.key === 'ArrowRight') this.next();
     });
+
+    // Mobile touch swipe gestures
+    let touchStartX = 0;
+    let touchStartY = 0;
+    this.modal.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    this.modal.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+      // Horizontal swipe threshold 45px
+      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) {
+          this.next();
+        } else {
+          this.prev();
+        }
+      }
+    }, { passive: true });
   }
 
   open(index) {
