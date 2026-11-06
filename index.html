@@ -16,6 +16,9 @@
 
   <!-- Reference Template Theme Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Theme Script (Early Execution to Prevent Flash) -->
+  <script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -46,8 +49,14 @@
         </ul>
       </nav>
 
-      <!-- Action Button & Mobile Toggle (Picto Style) -->
+      <!-- Action Button, Theme Toggle & Mobile Toggle (Picto Style) -->
       <div class="nav-actions">
+        <!-- Dark/Light Mode Theme Switcher -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle dark/light theme">
+          <span class="theme-icon sun-icon">☀️</span>
+          <span class="theme-icon moon-icon">🌙</span>
+        </button>
+
         <a href="#contact" class="btn-picto-primary nav-contact-btn" style="padding: 0.65rem 1.6rem;">Contact</a>
         <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="hamburger-bar"></span>
@@ -1164,23 +1173,28 @@
           <h2 class="contact-form-title">Let's work together!</h2>
           <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">
             I design and manage high-impact brand strategies, communications, and digital marketing campaigns. Send a message to get started.
-          </p>
+          <div id="form-status-alert" class="form-status-alert" role="alert"></div>
 
-          <form onsubmit="event.preventDefault(); window.open('https://wa.me/2348165203680?text=' + encodeURIComponent('Hello Peter, I saw your portfolio and would like to collaborate on a project.'), '_blank');">
+          <form id="portfolio-contact-form">
+            <!-- FormSubmit direct email configuration -->
+            <input type="hidden" name="_subject" value="New Portfolio Inquiry - Peter Oladeji">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" style="display:none">
+
             <div class="form-group">
-              <input type="text" class="form-input" placeholder="Your Name" required>
+              <input type="text" name="name" class="form-input" placeholder="Your Name" required>
             </div>
             <div class="form-group">
-              <input type="email" class="form-input" placeholder="Your Email Address" required>
+              <input type="email" name="email" class="form-input" placeholder="Your Email Address" required>
             </div>
             <div class="form-group">
-              <input type="tel" class="form-input" placeholder="Your Phone Number">
+              <input type="tel" name="phone" class="form-input" placeholder="Your Phone Number (Optional)">
             </div>
             <div class="form-group">
-              <textarea class="form-textarea" rows="4" placeholder="Tell me about your project..."></textarea>
+              <textarea name="message" class="form-textarea" rows="4" placeholder="Tell me about your brand, project, or marketing goals..." required></textarea>
             </div>
-            <button type="submit" class="btn-pill" style="width: 100%; font-size: 1rem; padding: 0.9rem;">
-              Send Message on WhatsApp ↗
+            <button type="submit" class="btn-pill" style="width: 100%; font-size: 1rem; padding: 0.95rem; cursor: pointer; border: none;">
+              Send Message to Inbox
             </button>
           </form>
         </div>
@@ -1244,6 +1258,17 @@
       </p>
     </div>
   </footer>
+
+  <!-- Floating WhatsApp Quick-Chat Button -->
+  <a href="https://wa.me/2348165203680?text=Hi%20Peter%2C%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20marketing%20%26%20brand%20project." class="whatsapp-float-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" title="Chat directly with Peter on WhatsApp">
+    <div class="whatsapp-pulse-ring"></div>
+    <div class="whatsapp-icon-circle">
+      <svg viewBox="0 0 24 24">
+        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01s-.44.06-.67.31c-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6-.1.49-.3 1.47-1.2 1.68-1.68.21-.49.21-.91.15-.99-.06-.1-.23-.17-.48-.3z"/>
+      </svg>
+    </div>
+    <span class="whatsapp-float-label">Chat on WhatsApp</span>
+  </a>
 
   <!-- Floating Back to Top Button (Picto Style) -->
   <a href="#hero" class="floating-top-btn" aria-label="Back to top">↑</a>

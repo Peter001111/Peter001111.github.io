@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initContactBuilder();
+  initContactForm();
 });
 
 function initContactBuilder() {
@@ -91,3 +92,78 @@ function showToast(message) {
     toast.classList.remove('show');
   }, 2800);
 }
+
+function initContactForm() {
+  const form = document.getElementById('portfolio-contact-form');
+  if (!form) return;
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const alertBox = document.getElementById('form-status-alert');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Check honeypot
+    const honeypot = form.querySelector('input[name="_honey"]');
+    if (honeypot && honeypot.value) return;
+
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.classList.add('btn-loading');
+    submitBtn.textContent = 'Sending Message...';
+    submitBtn.disabled = true;
+
+    if (alertBox) {
+      alertBox.className = 'form-status-alert';
+      alertBox.style.display = 'none';
+      alertBox.innerHTML = '';
+    }
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/oladejipeter80@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        form.reset();
+        if (alertBox) {
+          alertBox.className = 'form-status-alert status-success';
+          alertBox.innerHTML = `
+            <span style="font-size: 1.25rem;">✅</span>
+            <div>
+              <strong>Message Sent Successfully!</strong>
+              <p style="margin-top: 4px; font-size: 0.88rem;">Thank you! Your inquiry has been delivered directly to Peter Oladeji's inbox (oladejipeter80@gmail.com). I will review your requirements and reply within 24 hours.</p>
+            </div>
+          `;
+          alertBox.style.display = 'flex';
+        }
+      } else {
+        throw new Error(result.message || 'Form submission failed');
+      }
+    } catch (err) {
+      if (alertBox) {
+        alertBox.className = 'form-status-alert status-error';
+        alertBox.innerHTML = `
+          <span style="font-size: 1.25rem;">⚠️</span>
+          <div>
+            <strong>Unable to deliver automatically.</strong>
+            <p style="margin-top: 4px; font-size: 0.88rem;">Please email me directly at <a href="mailto:oladejipeter80@gmail.com" style="text-decoration: underline; font-weight: bold;">oladejipeter80@gmail.com</a> or click the WhatsApp button on the bottom left for an instant response.</p>
+          </div>
+        `;
+        alertBox.style.display = 'flex';
+      }
+    } finally {
+      submitBtn.classList.remove('btn-loading');
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+    }
+  });
+}
+

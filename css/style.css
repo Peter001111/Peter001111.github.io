@@ -27,6 +27,23 @@
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* Luxury Nocturnal Purple Dark Theme */
+[data-theme="dark"] {
+  --primary: #9d6aff;
+  --primary-hover: #b388ff;
+  --primary-light: rgba(157, 106, 255, 0.16);
+  --dark-purple: #1d0e3a;
+  --deep-bg: #07040c;
+  --page-bg: #0d0816;
+  --card-bg: #150d24;
+  --text-main: #f8f6fc;
+  --text-muted: #a69cb8;
+  --border-light: rgba(157, 106, 255, 0.18);
+  --border-hover: rgba(157, 106, 255, 0.42);
+  --shadow-subtle: 0 4px 25px rgba(0, 0, 0, 0.45);
+  --shadow-hover: 0 12px 35px rgba(157, 106, 255, 0.22);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -40,12 +57,14 @@ html {
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
   overflow-x: hidden;
   background-color: var(--page-bg);
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Atmospheric Glow in Top-Right Corner (like reference image) */
@@ -197,6 +216,64 @@ img {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1.5px solid var(--border-light);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(20, 12, 28, 0.04);
+  transition: all 0.25s ease;
+  color: var(--text-main);
+  padding: 0;
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: #180f28;
+  border-color: rgba(157, 106, 255, 0.25);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(135, 80, 247, 0.25);
+}
+
+.theme-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: absolute;
+}
+
+.theme-toggle-btn .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.theme-toggle-btn .moon-icon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+.theme-toggle-btn.is-dark .sun-icon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+
+.theme-toggle-btn.is-dark .moon-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
 .mobile-nav-toggle {
@@ -1701,6 +1778,317 @@ body.nav-menu-open {
   box-shadow: 0 10px 25px rgba(135, 80, 247, 0.6);
 }
 
+/* Floating WhatsApp Quick-Chat Button */
+.whatsapp-float-btn {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #25D366;
+  color: #ffffff !important;
+  padding: 0.75rem 1.35rem 0.75rem 1rem;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.38), 0 2px 6px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.whatsapp-float-btn:hover {
+  background: #20bd5a;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+  color: #ffffff !important;
+}
+
+.whatsapp-icon-circle {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.whatsapp-icon-circle svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.whatsapp-pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-pill);
+  border: 2px solid rgba(37, 211, 102, 0.6);
+  animation: waPulse 2.2s infinite;
+  pointer-events: none;
+}
+
+@keyframes waPulse {
+  0% { transform: scale(0.96); opacity: 0.9; }
+  50% { transform: scale(1.06); opacity: 0; }
+  100% { transform: scale(0.96); opacity: 0; }
+}
+
+/* Form Status Banners & Loading States */
+.form-status-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+  font-size: 0.925rem;
+  line-height: 1.5;
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.form-status-alert.status-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #065f46;
+}
+
+[data-theme="dark"] .form-status-alert.status-success {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+}
+
+.form-status-alert.status-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #991b1b;
+}
+
+[data-theme="dark"] .form-status-alert.status-error {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-loading::after {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btnSpin 0.7s linear infinite;
+  margin-left: 0.65rem;
+  vertical-align: middle;
+}
+
+@keyframes btnSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode Component Overrides
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .about-section {
+  background: #11091d !important;
+  border-color: rgba(157, 106, 255, 0.12);
+}
+
+[data-theme="dark"] .about-portrait-card {
+  background: #1a102b;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .about-social-strip {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.18);
+}
+
+[data-theme="dark"] .about-social-link {
+  color: #9d6aff;
+}
+
+[data-theme="dark"] .about-social-link:hover {
+  color: #b388ff;
+}
+
+[data-theme="dark"] .hero-portrait-frame {
+  background: #1a102d;
+  border-color: #211538;
+}
+
+[data-theme="dark"] .hero-stat-box {
+  background: #170f25;
+  border-color: rgba(157, 106, 255, 0.18);
+}
+
+[data-theme="dark"] .hero-stat-box:hover {
+  background: #201533;
+}
+
+[data-theme="dark"] .hero-stat-value {
+  color: #f8f6fc;
+}
+
+[data-theme="dark"] .btn-picto-outline {
+  background: #150d24;
+  border-color: rgba(157, 106, 255, 0.28);
+  color: #f8f6fc !important;
+}
+
+[data-theme="dark"] .btn-picto-outline:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .service-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .service-card:hover {
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .process-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .process-icon-box {
+  background: rgba(157, 106, 255, 0.15);
+  color: #9d6aff;
+}
+
+[data-theme="dark"] .experience-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .exp-company-tag {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8f6fc;
+}
+
+[data-theme="dark"] .exp-proof-card {
+  background: #150d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .exp-proof-caption-bar {
+  background: #150d24;
+  border-color: rgba(157, 106, 255, 0.12);
+}
+
+[data-theme="dark"] .volunteer-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .volunteer-icon-badge {
+  background: rgba(157, 106, 255, 0.15);
+  color: #9d6aff;
+}
+
+[data-theme="dark"] .resume-pill-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] #works {
+  background-color: #0f081a !important;
+  border-color: rgba(157, 106, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .works-filter-btn {
+  background: #150d24;
+  border-color: rgba(157, 106, 255, 0.2);
+  color: #f8f6fc;
+}
+
+[data-theme="dark"] .works-filter-btn.active {
+  background: var(--gradient-purple);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .work-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .skill-pill-card {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .contact-section-grid {
+  background: #140d24;
+  border-color: rgba(157, 106, 255, 0.15);
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea {
+  background: #0d0718;
+  border-color: rgba(157, 106, 255, 0.2);
+  color: #f8f6fc;
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-textarea:focus {
+  border-color: var(--primary);
+  background: #11091f;
+}
+
+[data-theme="dark"] .site-nav {
+  background: rgba(13, 8, 22, 0.92);
+  border-bottom-color: rgba(157, 106, 255, 0.12);
+}
+
+[data-theme="dark"] .nav-link {
+  color: #e5def5;
+}
+
+[data-theme="dark"] .nav-link:hover {
+  color: var(--primary);
+}
+
+[data-theme="dark"] .nav-link.active {
+  background: var(--primary);
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .mobile-nav-toggle {
+  background: #180f28;
+  border-color: rgba(157, 106, 255, 0.25);
+}
+
+[data-theme="dark"] .hamburger-bar {
+  background: #f8f6fc;
+}
+
+[data-theme="dark"] .nav-links {
+  background: rgba(18, 11, 29, 0.98);
+  border-bottom-color: rgba(157, 106, 255, 0.2);
+}
+
+[data-theme="dark"] .skills-main-title {
+  color: #b388ff;
+}
+
 /* --------------------------------------------------------------------------
    Responsive Design & Mobile Optimization
    -------------------------------------------------------------------------- */
@@ -2413,6 +2801,20 @@ body.nav-menu-open {
   .exp-proof-grid.grid-4,
   .exp-proof-grid.grid-3 {
     gap: 0.5rem;
+  }
+
+  .whatsapp-float-btn {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.7rem;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+
+  .whatsapp-float-label {
+    display: none;
   }
 }
 
