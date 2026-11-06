@@ -15,10 +15,74 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Reference Template Theme Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2.2">
 
-  <!-- Theme Script (Early Execution to Prevent Flash) -->
-  <script src="js/theme.js"></script>
+  <!-- Inlined Theme Controller (Immune to External Script Caching) -->
+  <script>
+    (function() {
+      var THEME_KEY = 'peter-portfolio-theme';
+      function getPreferredTheme() {
+        try {
+          var saved = localStorage.getItem(THEME_KEY);
+          if (saved === 'dark' || saved === 'light') return saved;
+        } catch (e) {}
+        return 'light'; // Clean default to original light aesthetic
+      }
+
+      function applyTheme(theme) {
+        var isDark = (theme === 'dark');
+        var themeName = isDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', themeName);
+        document.documentElement.classList.toggle('dark-theme', isDark);
+        document.documentElement.classList.toggle('light-theme', !isDark);
+        if (document.body) {
+          document.body.classList.toggle('dark-theme', isDark);
+          document.body.classList.toggle('light-theme', !isDark);
+        }
+
+        var toggles = document.querySelectorAll('.theme-toggle-btn');
+        toggles.forEach(function(btn) {
+          btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+          btn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+          if (isDark) {
+            btn.classList.add('is-dark');
+          } else {
+            btn.classList.remove('is-dark');
+          }
+        });
+      }
+
+      window.togglePortfolioTheme = function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var current = document.documentElement.getAttribute('data-theme') || getPreferredTheme();
+        var next = current === 'dark' ? 'light' : 'dark';
+        try {
+          localStorage.setItem(THEME_KEY, next);
+        } catch (err) {}
+        applyTheme(next);
+        return false;
+      };
+
+      // Apply theme to documentElement immediately
+      var currentTheme = getPreferredTheme();
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      document.documentElement.classList.add(currentTheme === 'dark' ? 'dark-theme' : 'light-theme');
+
+      function initThemeButtons() {
+        applyTheme(getPreferredTheme());
+        var toggles = document.querySelectorAll('.theme-toggle-btn');
+        toggles.forEach(function(btn) {
+          btn.onclick = window.togglePortfolioTheme;
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initThemeButtons);
+      } else {
+        initThemeButtons();
+      }
+    })();
+  </script>
 </head>
 <body>
 
@@ -29,12 +93,12 @@
   <header class="site-nav">
     <div class="container site-nav-inner">
       
-      <!-- Brand Logo (Picto Monogram Badge) -->
-      <a href="#hero" class="site-logo" aria-label="Peter Oladeji - Home" title="Peter Oladeji - Home">
+      <!-- Mobile-Only Brand Badge (Hidden on Desktop to keep header completely un-jampacked) -->
+      <a href="#hero" class="mobile-only-logo" aria-label="Peter Oladeji - Home" title="Peter Oladeji - Home">
         <span class="logo-badge">P</span>
       </a>
 
-      <!-- Navigation Menu (Picto Exact Structure) -->
+      <!-- Navigation Menu (Spacious & Clean Layout) -->
       <nav id="site-nav-menu">
         <ul class="nav-links" id="nav-links">
           <li><a href="#hero" class="nav-link active">Home</a></li>
@@ -48,15 +112,29 @@
         </ul>
       </nav>
 
-      <!-- Action Button, Theme Toggle & Mobile Toggle (Picto Style) -->
+      <!-- Action Button, Theme Toggle & Mobile Toggle -->
       <div class="nav-actions">
-        <!-- Dark/Light Mode Theme Switcher -->
-        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="window.togglePortfolioTheme && window.togglePortfolioTheme(event)" aria-label="Toggle dark/light theme" title="Toggle dark/light theme">
-          <span class="theme-icon sun-icon">☀️</span>
-          <span class="theme-icon moon-icon">🌙</span>
+        <!-- Dark/Light Mode Theme Switcher (Branded Purple SVG Icons) -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="window.togglePortfolioTheme && window.togglePortfolioTheme(event); return false;" aria-label="Toggle dark/light theme" title="Toggle dark/light theme" type="button">
+          <!-- Moon Icon (shown in Light Mode to switch to Dark Mode) -->
+          <svg class="theme-icon-svg moon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <!-- Sun Icon (shown in Dark Mode to switch to Light Mode) -->
+          <svg class="theme-icon-svg sun-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
         </button>
 
-        <a href="#contact" class="btn-picto-primary nav-contact-btn" style="padding: 0.6rem 1.35rem;">Contact</a>
+        <a href="#contact" class="btn-picto-primary nav-contact-btn" style="padding: 0.6rem 1.4rem;">Contact</a>
         <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
           <span class="hamburger-bar"></span>
           <span class="hamburger-bar"></span>

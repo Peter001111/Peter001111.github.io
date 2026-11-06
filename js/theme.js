@@ -11,16 +11,25 @@
       const saved = localStorage.getItem(THEME_KEY);
       if (saved === 'dark' || saved === 'light') return saved;
     } catch (e) {}
-    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    return 'light'; // Clean default to original light aesthetic
   }
 
   function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
+    const isDark = (theme === 'dark');
+    const themeName = isDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', themeName);
+    document.documentElement.classList.toggle('dark-theme', isDark);
+    document.documentElement.classList.toggle('light-theme', !isDark);
+    if (document.body) {
+      document.body.classList.toggle('dark-theme', isDark);
+      document.body.classList.toggle('light-theme', !isDark);
+    }
+
     const toggles = document.querySelectorAll('.theme-toggle-btn');
     toggles.forEach(btn => {
-      btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-      btn.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-      if (theme === 'dark') {
+      btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      btn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+      if (isDark) {
         btn.classList.add('is-dark');
       } else {
         btn.classList.remove('is-dark');
@@ -40,7 +49,8 @@
 
   // Apply immediately to prevent flash of wrong theme
   const initialTheme = getPreferredTheme();
-  applyTheme(initialTheme);
+  document.documentElement.setAttribute('data-theme', initialTheme);
+  document.documentElement.classList.add(initialTheme === 'dark' ? 'dark-theme' : 'light-theme');
 
   function bindEvents() {
     applyTheme(getPreferredTheme());
