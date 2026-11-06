@@ -1163,16 +1163,46 @@
   <script src="js/gallery.js"></script>
   <script src="js/contact.js"></script>
   <script>
-    // Smooth Active Link Tracker (Picto Nav Style)
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Navigation Active Link Tracking & Dynamic Click Highlight
       const navLinks = document.querySelectorAll('.nav-links .nav-link');
       const sections = ['hero', 'about', 'services', 'process', 'experience', 'works', 'skills', 'contact']
         .map(id => document.getElementById(id))
         .filter(Boolean);
 
+      let isUserNavClick = false;
+      let navClickTimer = null;
+
+      function updateActiveNav(id) {
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === '#' + id) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          const targetHref = this.getAttribute('href');
+          if (targetHref && targetHref.startsWith('#')) {
+            const targetId = targetHref.substring(1);
+            updateActiveNav(targetId);
+            isUserNavClick = true;
+            clearTimeout(navClickTimer);
+            navClickTimer = setTimeout(() => {
+              isUserNavClick = false;
+            }, 800);
+          }
+        });
+      });
+
       window.addEventListener('scroll', () => {
+        if (isUserNavClick) return;
         let current = 'hero';
-        const scrollPosition = window.pageYOffset + 150;
+        const scrollPosition = window.pageYOffset + 200;
 
         sections.forEach(section => {
           if (scrollPosition >= section.offsetTop) {
@@ -1180,15 +1210,14 @@
           }
         });
 
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + current) {
-            link.classList.add('active');
-          }
-        });
+        if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 80) {
+          current = 'contact';
+        }
+
+        updateActiveNav(current);
       });
 
-      // Interactive Service Cards: Any clicked box receives the purple gradient
+      // 2. Interactive Service Cards: Any clicked box receives the purple highlight
       const serviceCards = document.querySelectorAll('.service-card');
       serviceCards.forEach(card => {
         card.setAttribute('tabindex', '0');
@@ -1206,7 +1235,9 @@
             card.click();
           }
         });
-      // Mobile Navigation Menu Toggle & Backdrop
+      });
+
+      // 3. Mobile Navigation Menu Toggle & Backdrop
       const mobileToggle = document.getElementById('mobile-nav-toggle');
       const navLinksList = document.getElementById('nav-links');
       const navBackdrop = document.getElementById('mobile-nav-backdrop');
